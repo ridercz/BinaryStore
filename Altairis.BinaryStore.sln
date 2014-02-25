@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.Core", "Altairis.BinaryStore.Core\Altairis.BinaryStore.Core.csproj", "{A554EC1E-5968-45FE-8939-2BAAC6171692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.FileSystem", "Altairis.BinaryStore.FileSystem\Altairis.BinaryStore.FileSystem.csproj", "{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.WindowsAzure", "Altairis.BinaryStore.WindowsAzure\Altairis.BinaryStore.WindowsAzure.csproj", "{A7401818-0923-4DCA-9C41-5C10186F1ED5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{79550055-C67B-4507-A0D2-ECCB22F4C81B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{8AC3CD28-8186-42D7-A0A1-B3B103001F13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSample", "Samples\ConsoleSample\ConsoleSample.csproj", "{8DE77528-1D35-45D2-996B-440E1C9887F4}"
+EndProject
+Global
+	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A554EC1E-5968-45FE-8939-2BAAC6171692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A554EC1E-5968-45FE-8939-2BAAC6171692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A554EC1E-5968-45FE-8939-2BAAC6171692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A554EC1E-5968-45FE-8939-2BAAC6171692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7401818-0923-4DCA-9C41-5C10186F1ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7401818-0923-4DCA-9C41-5C10186F1ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7401818-0923-4DCA-9C41-5C10186F1ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7401818-0923-4DCA-9C41-5C10186F1ED5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8DE77528-1D35-45D2-996B-440E1C9887F4} = {79550055-C67B-4507-A0D2-ECCB22F4C81B}
+		{A554EC1E-5968-45FE-8939-2BAAC6171692} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
+		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
+		{A7401818-0923-4DCA-9C41-5C10186F1ED5} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		BuildVersion_DetectChanges = True
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.None
+	EndGlobalSection
+EndGlobal

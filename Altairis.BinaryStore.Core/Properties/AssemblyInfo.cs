@@ -1,0 +1,12 @@
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security;
+
+[assembly: AssemblyTitle("Altairis Binary Store - Core Library")]
+[assembly: AssemblyCompany("Altairis, s. r. o.")]
+[assembly: AssemblyProduct("Altairis Binary Store")]
+[assembly: AssemblyCopyright("Copyright © Altairis, 2012")]
+[assembly: ComVisible(false)]
+[assembly: AllowPartiallyTrustedCallers]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
