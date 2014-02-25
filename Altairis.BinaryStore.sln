@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.Core", "Altairis.BinaryStore.Core\Altairis.BinaryStore.Core.csproj", "{A554EC1E-5968-45FE-8939-2BAAC6171692}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.FileSystem", "Altairis.BinaryStore.FileSystem\Altairis.BinaryStore.FileSystem.csproj", "{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3}"
@@ -13,11 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{8AC3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSample", "Samples\ConsoleSample\ConsoleSample.csproj", "{8DE77528-1D35-45D2-996B-440E1C9887F4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{A397DE52-29A5-4F77-AEEA-101831C9C296}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		WE-Markdown.css = WE-Markdown.css
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -44,15 +49,19 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8DE77528-1D35-45D2-996B-440E1C9887F4} = {79550055-C67B-4507-A0D2-ECCB22F4C81B}
-		{A554EC1E-5968-45FE-8939-2BAAC6171692} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
 		{0BC9FCA3-8DA2-4F7D-AD16-95D6501CABA3} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
 		{A7401818-0923-4DCA-9C41-5C10186F1ED5} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
+		{A554EC1E-5968-45FE-8939-2BAAC6171692} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
+		{8DE77528-1D35-45D2-996B-440E1C9887F4} = {79550055-C67B-4507-A0D2-ECCB22F4C81B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_DetectChanges = True
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_UpdateAssemblyVersion = False
 		BuildVersion_BuildVersioningStyle = None.None.None.None
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_DetectChanges = True
+	EndGlobalSection
+	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
 	EndGlobalSection
 EndGlobal
