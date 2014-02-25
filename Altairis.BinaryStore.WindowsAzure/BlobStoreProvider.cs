@@ -65,7 +65,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
                 blob.Delete();
             }
             catch (StorageException sex) {
-                if (sex.RequestInformation.HttpStatusCode== 404) return false;
+                if (sex.RequestInformation.HttpStatusCode == 404) return false;
                 throw;
             }
             return true;

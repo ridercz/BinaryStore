@@ -7,10 +7,10 @@ using Altairis.BinaryStore.Configuration;
 namespace Altairis.BinaryStore {
 
     public static class StoreManager {
+
         #region Provider infrastructure implementation
 
         static StoreManager() {
-
             // Get configuration info
             var config = ConfigurationManager.GetSection("altairis.binaryStore") as BinaryStoreSection;
             if (config == null || config.Providers == null || config.Providers.Count == 0) throw new ProviderException("No Store providers specified.");
@@ -35,7 +35,6 @@ namespace Altairis.BinaryStore {
 
         private static StoreProvider InstantiateProvider(ProviderSettings settings) {
             try {
-
                 // Get type and assembly name
                 var providerType = Type.GetType(settings.Type);
 

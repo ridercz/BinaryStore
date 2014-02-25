@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using Altairis.BinaryStore;
 using System.Linq;
 
 namespace Altairis.BinaryStore.FileSystem {
@@ -93,7 +92,6 @@ namespace Altairis.BinaryStore.FileSystem {
             // Get full file name
             var fileName = Path.Combine(this.PhysicalFolderName, name);
             if (!File.Exists(fileName)) {
-
                 // File not found
                 stream = null;
                 contentType = null;
@@ -114,7 +112,6 @@ namespace Altairis.BinaryStore.FileSystem {
             // Get full file name
             var fileName = Path.Combine(this.PhysicalFolderName, name);
             if (!File.Exists(fileName)) {
-
                 // File not found
                 data = null;
                 contentType = null;

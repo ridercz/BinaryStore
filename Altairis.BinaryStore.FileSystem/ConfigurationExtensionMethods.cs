@@ -6,7 +6,6 @@ namespace Altairis.BinaryStore.FileSystem {
     internal static class ConfigurationExtensionMethods {
 
         public static string GetConfigValue(this NameValueCollection config, string name, string defaultValue) {
-
             // Validate arguments
             if (config == null) throw new ArgumentNullException("config");
             if (name == null) throw new ArgumentNullException("name");
@@ -24,7 +23,6 @@ namespace Altairis.BinaryStore.FileSystem {
         }
 
         public static int GetConfigValue(this NameValueCollection config, string name, int defaultValue) {
-
             // Validate arguments
             if (config == null) throw new ArgumentNullException("config");
             if (name == null) throw new ArgumentNullException("name");
@@ -44,7 +42,6 @@ namespace Altairis.BinaryStore.FileSystem {
         }
 
         public static bool GetConfigValue(this NameValueCollection config, string name, bool defaultValue) {
-
             // Validate arguments
             if (config == null) throw new ArgumentNullException("config");
             if (name == null) throw new ArgumentNullException("name");
