@@ -7,6 +7,5 @@ using System.Security;
 [assembly: AssemblyProduct("Altairis Binary Store")]
 [assembly: AssemblyCopyright("Copyright © Altairis, 2012")]
 [assembly: ComVisible(false)]
-[assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

@@ -2,21 +2,61 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web.Hosting;
 
 namespace Altairis.BinaryStore.FileSystem {
 
     public class FileSystemStoreProvider : StoreProvider {
+
         private const int DEFAULT_BUFFER_SIZE = 65536;
         private const string DEFAULT_CONTENT_TYPE = "application/octet-stream";
         private const string TYPE_SUFFIX = ".$type";
 
+        private string folderName;
+        private string defaultContentType = DEFAULT_CONTENT_TYPE;
+        private int bufferSize = DEFAULT_BUFFER_SIZE;
+
         #region Initialization and configuration
 
-        public int BufferSize { get; private set; }
+        public int BufferSize
+        {
+            get { return bufferSize; }
+            set {
+                if (value < 1) throw new ConfigurationErrorsException("Buffer size must be positive integer.");
+                bufferSize = value;
+            }
+        }
 
-        public string DefaultContentType { get; private set; }
+        public string DefaultContentType {
+            get { return defaultContentType; }
+            set {
+                if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Invalid default content type.");
 
-        public string FolderName { get; private set; }
+                defaultContentType = value; 
+            }
+        }
+
+        public string FolderName {
+            get { return folderName; }
+            set {
+                if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Required attribute \"folderName\" not set.");
+                if (value.StartsWith("~/")) {
+                    // Path is web root relative
+                    if (!HostingEnvironment.IsHosted) 
+                        throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
+                    this.PhysicalFolderName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, value).TrimEnd('\\');
+                }
+                else {
+                    // Path is absolute
+                    this.PhysicalFolderName = value.TrimEnd('\\');
+                }
+
+                // Try to create the data folder
+                Directory.CreateDirectory(this.PhysicalFolderName);
+
+                folderName = value;                
+            }
+        }
 
         public string PhysicalFolderName { get; private set; }
 
@@ -26,24 +66,10 @@ namespace Altairis.BinaryStore.FileSystem {
 
             // Get data path
             this.FolderName = config.GetConfigValue("folderName", string.Empty);
-            if (string.IsNullOrWhiteSpace(this.FolderName)) throw new ConfigurationErrorsException("Required attribute \"folderName\" not set.");
-            if (this.FolderName.StartsWith("~/")) {
-                // Path is web root relative
-                if (System.Web.HttpContext.Current == null) throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
-                this.PhysicalFolderName = System.Web.HttpContext.Current.Server.MapPath(this.FolderName).TrimEnd('\\');
-            }
-            else {
-                // Path is absolute
-                this.PhysicalFolderName = this.FolderName.TrimEnd('\\');
-            }
-            // Try to create the data folder
-            Directory.CreateDirectory(this.PhysicalFolderName);
-
+            
             // Get other configuration
             this.DefaultContentType = config.GetConfigValue("defaultContentType", DEFAULT_CONTENT_TYPE);
-            if (string.IsNullOrWhiteSpace(this.DefaultContentType)) throw new ConfigurationErrorsException("Invalid default content type");
             this.BufferSize = config.GetConfigValue("bufferSize", DEFAULT_BUFFER_SIZE);
-            if (this.BufferSize < 1) throw new ConfigurationErrorsException("Buffer size must be positive integer.");
 
             // Throw error on excess attributes
             if (config.Count != 0) throw new ConfigurationErrorsException("Unrecognized configuration attributes found: " + string.Join(", ", config.AllKeys));

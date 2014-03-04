@@ -10,19 +10,60 @@ namespace Altairis.BinaryStore.WindowsAzure {
     public class BlobStoreProvider : Altairis.BinaryStore.StoreProvider {
         private const string DEFAULT_CONTAINER_NAME = "blob-store-provider";
         private const string DEFAULT_CONTENT_TYPE = "application/octet-stream";
+        
         private CloudBlobContainer container;
+        
+        private string connectionStringName;
+        private string containerName = DEFAULT_CONTAINER_NAME;
+        private string defaultContentType = DEFAULT_CONTENT_TYPE;
 
         #region Initialization and configuration
 
-        public int BufferSize { get; private set; }
+        protected CloudBlobContainer Container {
+            get
+            {
+                EnsureStorageClientReady();
+                return container;
+            }
+        }
 
         public string ConnectionString { get; private set; }
 
-        public string ConnectionStringName { get; private set; }
+        public string ConnectionStringName {
+            get { return connectionStringName; }
+            set {
+                ValidateStorageClientNotUsed();
+                if (string.IsNullOrWhiteSpace(value)) throw new ProviderException("Connection string name cannot be null or empty.");
+                
+                ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[value];
+                if (connectionStringSettings == null || string.IsNullOrWhiteSpace(connectionStringSettings.ConnectionString)) {
+                    throw new ProviderException("Connection string cannot be blank.");
+                }
+                
+                connectionStringName = value;
+                this.ConnectionString = connectionStringSettings.ConnectionString;
+            }
+        }
 
-        public string ContainerName { get; private set; }
+        public string ContainerName
+        {
+            get { return containerName; }
+            set {
+                ValidateStorageClientNotUsed();
+                if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Invalid container name.");
+                containerName = value;
+            }
+        }
 
-        public string DefaultContentType { get; private set; }
+        public string DefaultContentType
+        {
+            get { return defaultContentType; }
+            set {
+                ValidateStorageClientNotUsed();
+                if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Invalid default content type.");
+                defaultContentType = value; 
+            }
+        }
 
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config) {
             // Perform basic initialization
@@ -30,27 +71,33 @@ namespace Altairis.BinaryStore.WindowsAzure {
 
             // Initialize connection string
             this.ConnectionStringName = config.GetConfigValue("connectionStringName", null);
-            if (string.IsNullOrWhiteSpace(this.ConnectionStringName)) throw new ProviderException("Connection string name cannot be null or empty.");
-            ConnectionStringSettings ConnectionStringSettings = ConfigurationManager.ConnectionStrings[this.ConnectionStringName];
-            if (ConnectionStringSettings == null || ConnectionStringSettings.ConnectionString.Trim() == "") throw new ProviderException("Connection string cannot be blank.");
-            this.ConnectionString = ConnectionStringSettings.ConnectionString;
-
+            
             // Get other configuration
-            this.ContainerName = config.GetConfigValue("ContainerName", DEFAULT_CONTAINER_NAME);
-            if (string.IsNullOrWhiteSpace(this.ContainerName)) throw new ConfigurationErrorsException("Invalid container name");
+            this.ContainerName = config.GetConfigValue("containerName", DEFAULT_CONTAINER_NAME);
             this.DefaultContentType = config.GetConfigValue("defaultContentType", DEFAULT_CONTENT_TYPE);
-            if (string.IsNullOrWhiteSpace(this.DefaultContentType)) throw new ConfigurationErrorsException("Invalid default content type");
-
+            
             // Throw error on excess attributes
             if (config.Count != 0) throw new ConfigurationErrorsException("Unrecognized configuration attributes found: " + string.Join(", ", config.AllKeys));
+        }
 
-            // Initialize storage and create container
+        private void EnsureStorageClientReady() {
+            if (this.container != null) return;
+
             CloudStorageAccount account;
             var result = CloudStorageAccount.TryParse(this.ConnectionString, out account);
-            if (!result) throw new ProviderException("Invalid storage connection string");
+            if (!result)
+            {
+                throw new ProviderException("Invalid storage connection string.");
+            }
             var client = account.CreateCloudBlobClient();
             this.container = client.GetContainerReference(this.ContainerName);
             this.container.CreateIfNotExists();
+        }
+
+        protected virtual void ValidateStorageClientNotUsed() {
+            if (this.container != null) {
+                throw new InvalidOperationException("The property value cannot be changed because this instance has already been used.");
+            }
         }
 
         #endregion Initialization and configuration
@@ -60,7 +107,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.container.GetBlobReferenceFromServer(name);
+            var blob = this.Container.GetBlobReferenceFromServer(name);
             try {
                 blob.Delete();
             }
@@ -76,8 +123,8 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.container.GetBlobReferenceFromServer(name);
             try {
+                var blob = this.Container.GetBlobReferenceFromServer(name);
                 blob.FetchAttributes();
             }
             catch (StorageException sex) {
@@ -92,10 +139,11 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.container.GetBlobReferenceFromServer(name);
             try {
+                var blob = this.Container.GetBlobReferenceFromServer(name);
                 stream = new MemoryStream();
                 blob.DownloadToStream(stream);
+                stream.Position = 0;
                 contentType = blob.Properties.ContentType;
             }
             catch (StorageException sex) {
@@ -114,10 +162,12 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.container.GetBlobReferenceFromServer(name);
             try {
-                data = new byte[0];
-                blob.DownloadToByteArray(data, 0);
+                var blob = this.Container.GetBlobReferenceFromServer(name);
+                using (var ms = new MemoryStream()) {
+                    blob.DownloadToStream(ms);
+                    data = ms.ToArray();
+                }
                 contentType = blob.Properties.ContentType;
             }
             catch (StorageException sex) {
@@ -143,7 +193,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
 
             // Upload blob
-            var blob = this.container.GetBlobReferenceFromServer(name);
+            var blob = GetOrCreateBlob(name);
             blob.Properties.ContentType = contentType;
             blob.UploadFromStream(stream);
         }
@@ -159,9 +209,26 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
 
             // Upload blob
-            var blob = this.container.GetBlobReferenceFromServer(name);
+            var blob = GetOrCreateBlob(name);
             blob.Properties.ContentType = contentType;
             blob.UploadFromByteArray(data, 0, data.Length);
+        }
+
+        private ICloudBlob GetOrCreateBlob(string name) {
+            ICloudBlob blob;
+            try {
+                blob = this.Container.GetBlobReferenceFromServer(name);
+            }
+            catch (StorageException sex)
+            {
+                if (sex.RequestInformation.HttpStatusCode == 404) {
+                    blob = this.Container.GetBlockBlobReference(name);
+                }
+                else {
+                    throw;
+                }
+            }
+            return blob;
         }
     }
 }
