@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{A397DE52
 		WE-Markdown.css = WE-Markdown.css
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D682F59D-6253-49D3-B9BB-1A6623D004A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altairis.BinaryStore.Tests", "Tests\Altairis.BinaryStore.Tests\Altairis.BinaryStore.Tests.csproj", "{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,10 @@ Global
 		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DE77528-1D35-45D2-996B-440E1C9887F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,12 +61,13 @@ Global
 		{A7401818-0923-4DCA-9C41-5C10186F1ED5} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
 		{A554EC1E-5968-45FE-8939-2BAAC6171692} = {8AC3CD28-8186-42D7-A0A1-B3B103001F13}
 		{8DE77528-1D35-45D2-996B-440E1C9887F4} = {79550055-C67B-4507-A0D2-ECCB22F4C81B}
+		{CA4AB4A2-4649-4CE9-9A2B-6869F1F3D270} = {D682F59D-6253-49D3-B9BB-1A6623D004A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildVersioningStyle = None.None.None.None
-		BuildVersion_UpdateAssemblyVersion = False
-		BuildVersion_UpdateFileVersion = False
 		BuildVersion_DetectChanges = True
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.None
 	EndGlobalSection
 	GlobalSection(MercurialSourceControlSolutionProperties) = preSolution
 		SolutionIsControlled = True
