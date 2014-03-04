@@ -73,7 +73,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             this.ConnectionStringName = config.GetConfigValue("connectionStringName", null);
             
             // Get other configuration
-            this.ContainerName = config.GetConfigValue("ContainerName", DEFAULT_CONTAINER_NAME);
+            this.ContainerName = config.GetConfigValue("containerName", DEFAULT_CONTAINER_NAME);
             this.DefaultContentType = config.GetConfigValue("defaultContentType", DEFAULT_CONTENT_TYPE);
             
             // Throw error on excess attributes
