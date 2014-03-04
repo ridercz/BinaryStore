@@ -123,8 +123,8 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.Container.GetBlobReferenceFromServer(name);
             try {
+                var blob = this.Container.GetBlobReferenceFromServer(name);
                 blob.FetchAttributes();
             }
             catch (StorageException sex) {
@@ -139,10 +139,11 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.Container.GetBlobReferenceFromServer(name);
             try {
+                var blob = this.Container.GetBlobReferenceFromServer(name);
                 stream = new MemoryStream();
                 blob.DownloadToStream(stream);
+                stream.Position = 0;
                 contentType = blob.Properties.ContentType;
             }
             catch (StorageException sex) {
@@ -161,10 +162,12 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "name");
             if (!ValidateName(name)) throw new ArgumentException("Invalid name format.", "name");
 
-            var blob = this.Container.GetBlobReferenceFromServer(name);
             try {
-                data = new byte[0];
-                blob.DownloadToByteArray(data, 0);
+                var blob = this.Container.GetBlobReferenceFromServer(name);
+                using (var ms = new MemoryStream()) {
+                    blob.DownloadToStream(ms);
+                    data = ms.ToArray();
+                }
                 contentType = blob.Properties.ContentType;
             }
             catch (StorageException sex) {
@@ -190,7 +193,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
 
             // Upload blob
-            var blob = this.Container.GetBlobReferenceFromServer(name);
+            var blob = GetOrCreateBlob(name);
             blob.Properties.ContentType = contentType;
             blob.UploadFromStream(stream);
         }
@@ -206,9 +209,26 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
 
             // Upload blob
-            var blob = this.Container.GetBlobReferenceFromServer(name);
+            var blob = GetOrCreateBlob(name);
             blob.Properties.ContentType = contentType;
             blob.UploadFromByteArray(data, 0, data.Length);
+        }
+
+        private ICloudBlob GetOrCreateBlob(string name) {
+            ICloudBlob blob;
+            try {
+                blob = this.Container.GetBlobReferenceFromServer(name);
+            }
+            catch (StorageException sex)
+            {
+                if (sex.RequestInformation.HttpStatusCode == 404) {
+                    blob = this.Container.GetBlockBlobReference(name);
+                }
+                else {
+                    throw;
+                }
+            }
+            return blob;
         }
     }
 }

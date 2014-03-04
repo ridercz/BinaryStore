@@ -36,10 +36,10 @@ namespace Altairis.BinaryStore.Tests
         }
 
         private void DoTest(StoreProvider provider) {
-            // save bytes
+            // save bytes as new file
             provider.Save("test.txt", File.ReadAllBytes(TestFilePath));
 
-            // save stream
+            // save stream as new file
             using (var fs = new FileStream(TestFilePath, FileMode.Open, FileAccess.Read)) {
                 provider.Save("folder/folder2/test2.txt", fs);
             }
@@ -62,10 +62,22 @@ namespace Altairis.BinaryStore.Tests
                 for (var i = 0; i < bytes.Length; i++) {
                     Assert.AreEqual(s.ReadByte(), bytes[i]);
                 }
+                Assert.AreEqual(s.Position, s.Length);
             }
             finally {
                 s.Dispose();
             }
+
+            // overwrite file and read it to detect whether the changes were really saved
+            var newData = new byte[] { 1, 2, 3, 4, 5 };
+            provider.Save("test.txt", newData);
+            byte[] newData2;
+            provider.Load("test.txt", out newData2);
+            for (int i = 0; i < newData.Length; i++)
+            {
+                Assert.AreEqual(newData[i], newData2[i]);
+            }
+            Assert.AreEqual(newData.Length, newData2.Length);
 
             // delete files
             provider.Delete("test.txt");
