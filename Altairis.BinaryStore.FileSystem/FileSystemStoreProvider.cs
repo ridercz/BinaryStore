@@ -42,8 +42,9 @@ namespace Altairis.BinaryStore.FileSystem {
                 if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Required attribute \"folderName\" not set.");
                 if (value.StartsWith("~/")) {
                     // Path is web root relative
-                    if (System.Web.HttpContext.Current == null) throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
-                    this.PhysicalFolderName = System.Web.HttpContext.Current.Server.MapPath(value).TrimEnd('\\');
+                    if (!HostingEnvironment.IsHosted) 
+                        throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
+                    this.PhysicalFolderName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, value).TrimEnd('\\');
                 }
                 else {
                     // Path is absolute
