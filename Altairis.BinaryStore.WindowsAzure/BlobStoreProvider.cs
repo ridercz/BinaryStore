@@ -190,7 +190,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (!stream.CanRead) throw new InvalidOperationException("The stream does not support reading.");
 
             // Set default content type if none specified
-            if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
+            if (string.IsNullOrWhiteSpace(contentType)) contentType = DefaultContentType;
 
             // Upload blob
             var blob = GetOrCreateBlob(name);
@@ -206,7 +206,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             if (!ValidateContentType(contentType)) throw new ArgumentException("Invalid content-type format.", "contentType");
 
             // Set default content type if none specified
-            if (string.IsNullOrWhiteSpace(contentType)) contentType = DEFAULT_CONTENT_TYPE;
+            if (string.IsNullOrWhiteSpace(contentType)) contentType = DefaultContentType;
 
             // Upload blob
             var blob = GetOrCreateBlob(name);
