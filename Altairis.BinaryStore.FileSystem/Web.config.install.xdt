@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <altairis.binaryStore xdt:Transform="InsertIfMissing" />
+  <altairis.binaryStore>
+    <defaultProvider name="FileSystemProvider"
+                     xdt:Transform="InsertIfMissing" />
+    <providers xdt:Transform="InsertIfMissing" />
+    <providers>
+      <add name="FileSystemProvider"
+           type="Altairis.BinaryStore.FileSystem.FileSystemStoreProvider, Altairis.BinaryStore.FileSystem"
+           folderName="~/App_Data"
+           xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+    </providers>
+  </altairis.binaryStore>
+</configuration>

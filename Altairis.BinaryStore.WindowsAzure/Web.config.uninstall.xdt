@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <altairis.binaryStore>
+    <defaultProvider name="DevStorageProvider" xdt:Transform="RemoveAttributes(name)" xdt:Locator="Match(name)" />
+    <providers>
+      <add name="DevStorageProvider"
+           xdt:Transform="Remove" xdt:Locator="Match(name)" />
+    </providers>
+  </altairis.binaryStore>
+</configuration>

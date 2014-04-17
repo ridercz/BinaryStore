@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <connectionStrings xdt:Transform="InsertIfMissing"/>
+  <connectionStrings>
+    <add name="DevStorageAccount" connectionString="UseDevelopmentStorage=true" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+  </connectionStrings>
+  
+  <altairis.binaryStore xdt:Transform="InsertIfMissing" />
+  <altairis.binaryStore>
+    <defaultProvider name="DevStorageProvider"
+                     xdt:Transform="InsertIfMissing" />
+    <providers xdt:Transform="InsertIfMissing" />
+    <providers>
+      <add name="DevStorageProvider" 
+           type="Altairis.BinaryStore.WindowsAzure.BlobStoreProvider, Altairis.BinaryStore.WindowsAzure"
+           connectionStringName="DevStorageAccount"
+           xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+    </providers>
+  </altairis.binaryStore>
+</configuration>

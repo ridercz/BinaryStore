@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Altairis.BinaryStore.WindowsAzure</id>
+    <version>$version$</version>
+    <title>Altairis Binary Store - Azure Blob Storage Provider</title>
+    <authors>Michal A. Valasek, Tomas Herceg</authors>
+    <owners>Altairis</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Azure Blob Storage provider for Altairis Binary Store.</description>
+    <copyright>Copyright © Altairis, 2012-2014</copyright>
+    <projectUrl>https://github.com/ridercz/BinaryStore</projectUrl>
+    <licenseUrl>https://github.com/ridercz/BinaryStore/blob/master/LICENSE.md</licenseUrl>
+    <dependencies>
+      <dependency id="Altairis.BinaryStore.Core" />
+      <dependency id="WindowsAzure.Storage" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="*.xdt" target="content" />
+  </files>
+</package>

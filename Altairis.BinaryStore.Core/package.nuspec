@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Altairis.BinaryStore.Core</id>
+    <version>$Version$</version>
+    <title>Altairis Binary Store - Core Library</title>
+    <authors>Michal A. Valasek, Tomas Herceg</authors>
+    <owners>Altairis</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for storing binary in any data store, such as file system or Windows Azure Blob Storage.</description>
+    <copyright>Copyright © Altairis, 2012-2014</copyright>
+    <projectUrl>https://github.com/ridercz/BinaryStore</projectUrl>
+    <licenseUrl>https://github.com/ridercz/BinaryStore/blob/master/LICENSE.md</licenseUrl>
+    <dependencies />
+  </metadata>
+  <files>
+    <file src="*.xdt" target="content" />
+  </files>
+</package>
