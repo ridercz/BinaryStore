@@ -10,9 +10,9 @@ namespace Altairis.BinaryStore.WindowsAzure {
     public class BlobStoreProvider : Altairis.BinaryStore.StoreProvider {
         private const string DEFAULT_CONTAINER_NAME = "blob-store-provider";
         private const string DEFAULT_CONTENT_TYPE = "application/octet-stream";
-        
+
         private CloudBlobContainer container;
-        
+
         private string connectionStringName;
         private string containerName = DEFAULT_CONTAINER_NAME;
         private string defaultContentType = DEFAULT_CONTENT_TYPE;
@@ -20,8 +20,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
         #region Initialization and configuration
 
         protected CloudBlobContainer Container {
-            get
-            {
+            get {
                 EnsureStorageClientReady();
                 return container;
             }
@@ -34,19 +33,18 @@ namespace Altairis.BinaryStore.WindowsAzure {
             set {
                 ValidateStorageClientNotUsed();
                 if (string.IsNullOrWhiteSpace(value)) throw new ProviderException("Connection string name cannot be null or empty.");
-                
+
                 ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings[value];
                 if (connectionStringSettings == null || string.IsNullOrWhiteSpace(connectionStringSettings.ConnectionString)) {
                     throw new ProviderException("Connection string cannot be blank.");
                 }
-                
+
                 connectionStringName = value;
                 this.ConnectionString = connectionStringSettings.ConnectionString;
             }
         }
 
-        public string ContainerName
-        {
+        public string ContainerName {
             get { return containerName; }
             set {
                 ValidateStorageClientNotUsed();
@@ -55,13 +53,12 @@ namespace Altairis.BinaryStore.WindowsAzure {
             }
         }
 
-        public string DefaultContentType
-        {
+        public string DefaultContentType {
             get { return defaultContentType; }
             set {
                 ValidateStorageClientNotUsed();
                 if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Invalid default content type.");
-                defaultContentType = value; 
+                defaultContentType = value;
             }
         }
 
@@ -71,11 +68,11 @@ namespace Altairis.BinaryStore.WindowsAzure {
 
             // Initialize connection string
             this.ConnectionStringName = config.GetConfigValue("connectionStringName", null);
-            
+
             // Get other configuration
             this.ContainerName = config.GetConfigValue("containerName", DEFAULT_CONTAINER_NAME);
             this.DefaultContentType = config.GetConfigValue("defaultContentType", DEFAULT_CONTENT_TYPE);
-            
+
             // Throw error on excess attributes
             if (config.Count != 0) throw new ConfigurationErrorsException("Unrecognized configuration attributes found: " + string.Join(", ", config.AllKeys));
         }
@@ -85,8 +82,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
 
             CloudStorageAccount account;
             var result = CloudStorageAccount.TryParse(this.ConnectionString, out account);
-            if (!result)
-            {
+            if (!result) {
                 throw new ProviderException("Invalid storage connection string.");
             }
             var client = account.CreateCloudBlobClient();
@@ -219,8 +215,7 @@ namespace Altairis.BinaryStore.WindowsAzure {
             try {
                 blob = this.Container.GetBlobReferenceFromServer(name);
             }
-            catch (StorageException sex)
-            {
+            catch (StorageException sex) {
                 if (sex.RequestInformation.HttpStatusCode == 404) {
                     blob = this.Container.GetBlockBlobReference(name);
                 }
