@@ -18,8 +18,7 @@ namespace Altairis.BinaryStore.FileSystem {
 
         #region Initialization and configuration
 
-        public int BufferSize
-        {
+        public int BufferSize {
             get { return bufferSize; }
             set {
                 if (value < 1) throw new ConfigurationErrorsException("Buffer size must be positive integer.");
@@ -32,7 +31,7 @@ namespace Altairis.BinaryStore.FileSystem {
             set {
                 if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Invalid default content type.");
 
-                defaultContentType = value; 
+                defaultContentType = value;
             }
         }
 
@@ -42,9 +41,9 @@ namespace Altairis.BinaryStore.FileSystem {
                 if (string.IsNullOrWhiteSpace(value)) throw new ConfigurationErrorsException("Required attribute \"folderName\" not set.");
                 if (value.StartsWith("~/")) {
                     // Path is web root relative
-                    if (!HostingEnvironment.IsHosted) 
-                        throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
-                    this.PhysicalFolderName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, value).TrimEnd('\\');
+                    if (value.Length < 3) throw new ConfigurationErrorsException("The folderName must have at least three characters.");
+                    if (!HostingEnvironment.IsHosted) throw new ConfigurationErrorsException("Can't set folderName to relative path outside of HTTP context.");
+                    this.PhysicalFolderName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, value.Substring(2)).TrimEnd('\\');
                 }
                 else {
                     // Path is absolute
@@ -54,7 +53,7 @@ namespace Altairis.BinaryStore.FileSystem {
                 // Try to create the data folder
                 Directory.CreateDirectory(this.PhysicalFolderName);
 
-                folderName = value;                
+                folderName = value;
             }
         }
 
@@ -66,7 +65,7 @@ namespace Altairis.BinaryStore.FileSystem {
 
             // Get data path
             this.FolderName = config.GetConfigValue("folderName", string.Empty);
-            
+
             // Get other configuration
             this.DefaultContentType = config.GetConfigValue("defaultContentType", DEFAULT_CONTENT_TYPE);
             this.BufferSize = config.GetConfigValue("bufferSize", DEFAULT_BUFFER_SIZE);
