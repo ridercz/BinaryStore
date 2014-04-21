@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="package.nuspec" />
+    <None Include="Altairis.BinaryStore.WindowsAzure.nuspec" />
     <None Include="packages.config" />
     <None Include="Web.config.install.xdt" />
     <None Include="Web.config.uninstall.xdt" />
